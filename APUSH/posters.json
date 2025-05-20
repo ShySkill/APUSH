@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "Cold War",
+    "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster.jpg",
+    "explanation": "This poster uses green tones to emphasize environmental themes...",
+    "designer": "Jane Smith",
+    "year": 2022
+  },
+  {
+    "id": 2,
+    "title": "Music Festival",
+    "image_path": "posters/poster1.jpg",
+    "explanation": "Vibrant colors and dynamic typography create energy...",
+    "designer": "John Doe",
+    "year": 2021
+  },
+    {
+    "id": 1,
+    "title": "Cold War",
+    "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster2.jpg",
+    "explanation": "This poster uses green tones to emphasize environmental themes...",
+    "designer": "Jane Smith",
+    "year": 2022
+  },
+  {
+    "id": 1,
+    "title": "Cold War",
+    "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster3.jpg",
+    "explanation": "This poster uses green tones to emphasize environmental themes...",
+    "designer": "Jane Smith",
+    "year": 2022
+  },
+    {
+    "id": 1,
+    "title": "Cold War",
+    "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster4.jpg",
+    "explanation": "This poster uses green tones to emphasize environmental themes...",
+    "designer": "Jane Smith",
+    "year": 2022
+  }
+]
