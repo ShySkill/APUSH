@@ -16,7 +16,7 @@
     "year": 1951
   },
     {
-    "id": 1,
+    "id": 3,
     "title": "A strong America can prevent an atomic war",
     "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster2.jpg",
     "explanation": "This poster uses green tones to emphasize environmental themes...",
@@ -24,19 +24,19 @@
     "year": 1952
   },
   {
-    "id": 1,
-    "title": "Cold War",
+    "id": 4,
+    "title": "The Red Iceberg",
     "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster3.jpg",
-    "explanation": "This poster uses green tones to emphasize environmental themes...",
+    "explanation": "This poster uses the sensitive idea of the Titanic to show how the US can be stopped by these communist countries.",
     "designer": "Jane Smith",
-    "year": 2022
+    "year": 1953
   },
     {
-    "id": 1,
-    "title": "Cold War",
+    "id": 5,
+    "title": "Today in Chile - Soviet Union",
     "image_path": "C:\\Users\\ShySkill\\Downloads\\APUSH\\posters\\poster4.jpg",
     "explanation": "Cold War poster",
     "designer": "Soviet Union",
-    "year": 2022
+    "year": 1958
   }
 ]
