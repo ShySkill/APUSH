@@ -73,7 +73,7 @@ class PosterAnalysisTool:
             text="Cold War Poster Analysis Tool",
             font=("Helvetica", 32, "bold"),
             bg="#f0f0f0",
-            fg="#333"
+            fg="#de0b0b"
         )
         title_label.pack(pady=50)
         
