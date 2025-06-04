@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from pathlib import Path
 import os
 import json
 
@@ -8,7 +9,7 @@ class PosterAnalysisTool:
     def __init__(self, root):
         self.root = root
         self.root.title("Poster Analysis Tool")
-
+        path = Path(__file__).parent.absolute()
         width = self.root.winfo_screenwidth()
         height = self.root.winfo_screenheight()
         self.root.bind('<Escape>', lambda e: self.create_welcome_screen())
