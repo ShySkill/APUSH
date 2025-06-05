@@ -45,6 +45,36 @@ class PosterAnalysisTool:
         # Dictionary to keep references to PhotoImage objects
         self.image_references = {}
     
+    def bind_navigation_keys(self):
+        """Bind arrow keys for navigation"""
+        self.root.bind('<Left>', lambda e: self.show_previous_poster())
+        self.root.bind('<Right>', lambda e: self.show_next_poster())
+
+    def unbind_navigation_keys(self):
+        """Unbind arrow keys when leaving detail view"""
+        self.root.unbind('<Left>')
+        self.root.unbind('<Right>')
+
+    def show_next_poster(self):
+        """Show the next poster in the list"""
+        if self.current_poster:
+            try:
+                current_index = next(i for i, p in enumerate(self.posters) if p['id'] == self.current_poster['id'])
+                if current_index < len(self.posters) - 1:
+                    self.show_poster_detail(self.posters[current_index + 1])
+            except StopIteration:
+                pass  # Current poster not found in list
+
+    def show_previous_poster(self):
+        """Show the previous poster in the list"""
+        if self.current_poster:
+            try:
+                current_index = next(i for i, p in enumerate(self.posters) if p['id'] == self.current_poster['id'])
+                if current_index > 0:
+                    self.show_poster_detail(self.posters[current_index - 1])
+            except StopIteration:
+                pass  # Current poster not found in list
+
     def load_decoration_images(self):
         """Load decorative images for welcome screen"""
         try:
@@ -276,7 +306,7 @@ class PosterAnalysisTool:
             pady=10
         )
         
-        # Sample historical context text - replace with your actual content
+        # Historical context text
         historical_text = """The Cold War (1947-1991) was a period of great tension between the Soviet Union and the US and their respective allies. Propaganda posters played a crucial role in shaping public opinion on both sides.
 
 Key Themes in Cold War Propaganda:
@@ -292,8 +322,37 @@ Key Themes in Cold War Propaganda:
 5. Use of stereotypes: Posters would use popular figures that were fictional or real, such as Uncle Sam. 
 
 The posters reveal how each side wanted to define itself in opposition to the other, using powerful imagery and easy to understand messages to appeal to emotions rather than rational argument."""
+
+        # Results of propaganda text
+        results_text = """
+
+    RESULTS OF PROPAGANDA:
+
+    1. Polarized Public Opinion: Propaganda deepened the divide between capitalist and communist ideologies, making compromise more difficult.
+
+    2. Increased Military Spending: Fear-mongering posters contributed to the arms race and increased defense budgets in both blocs.
+
+    3. Cultural Stereotypes: Propaganda created lasting stereotypes about both sides that persist even today.
+
+    4. Political Mobilization: Posters were effective at rallying citizens behind government policies and military actions.
+
+    5. Distrust in Media: The overt propaganda led many to become skeptical of all government messaging, a legacy that continues in modern politics.
+
+    6. Artistic Legacy: While serving political purposes, these posters also represent significant works of graphic design and political art."""
+
+        text_content.insert("1.0", historical_text + results_text)
         
-        text_content.insert("1.0", historical_text)
+        # Add bold formatting to the RESULTS section
+        text_content.tag_add("bold", "1.0", "end")
+        text_content.tag_config("bold", font=("Arial", 14))
+        
+        # Find and bold the RESULTS title
+        start_index = text_content.search("RESULTS OF PROPAGANDA:", "1.0", stopindex="end")
+        if start_index:
+            end_index = f"{start_index}+{len('RESULTS OF PROPAGANDA:')}c"
+            text_content.tag_add("bold_title", start_index, end_index)
+            text_content.tag_config("bold_title", font=("Arial", 14, "bold"))
+        
         text_content.config(state="disabled")
         
         scrollbar = ttk.Scrollbar(text_frame, orient="vertical", command=text_content.yview)
@@ -302,7 +361,7 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         scrollbar.pack(side="right", fill="y")
         text_content.pack(side="left", fill="both", expand=True)
         
-        # Right panel for images
+        # Right panel for images (rest of your existing code remains the same)
         image_frame = tk.Frame(main_frame, width=400, bd=2, relief="ridge", bg="white")
         image_frame.pack(side="right", fill="both", expand=False)   
         image_frame.pack_propagate(False)
@@ -381,6 +440,7 @@ The posters reveal how each side wanted to define itself in opposition to the ot
     def show_poster_gallery(self):
         self.clear_screen()
         self.root.unbind('<Return>')
+        self.unbind_navigation_keys()  # Unbind arrow keys when in gallery view
         
         # Main container
         main_frame = tk.Frame(self.root)
@@ -470,9 +530,9 @@ The posters reveal how each side wanted to define itself in opposition to the ot
     
     def show_poster_detail(self, poster):
         """Show the detailed view of a selected poster"""
-        self.current_poster = poster
-        
         self.clear_screen()
+        self.current_poster = poster
+        self.bind_navigation_keys()  # Bind arrow keys for navigation
         
         # Main container
         main_frame = tk.Frame(self.root)
@@ -581,16 +641,39 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             )
             placeholder.pack(pady=20)
         
-        # Back button
+        # Navigation buttons
+        nav_frame = tk.Frame(poster_frame, bg="white")
+        nav_frame.pack(pady=10)
+        
+        prev_button = tk.Button(
+            nav_frame,
+            text="← Previous",
+            command=self.show_previous_poster,
+            font=("Arial", 12),
+            padx=10,
+            pady=5
+        )
+        prev_button.pack(side="left", padx=10)
+        
         back_button = tk.Button(
-            poster_frame,
+            nav_frame,
             text="Back to Gallery",
             command=self.show_poster_gallery,
             font=("Arial", 12),
             padx=10,
             pady=5
         )
-        back_button.pack(pady=20)
+        back_button.pack(side="left", padx=10)
+        
+        next_button = tk.Button(
+            nav_frame,
+            text="Next →",
+            command=self.show_next_poster,
+            font=("Arial", 12),
+            padx=10,
+            pady=5
+        )
+        next_button.pack(side="left", padx=10)
 
 if __name__ == "__main__":
     root = tk.Tk()
