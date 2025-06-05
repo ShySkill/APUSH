@@ -10,7 +10,6 @@ class PosterAnalysisTool:
         self.root = root
         self.root.title("Poster Analysis Tool")
         
-        # Set up paths using pathlib
         self.base_dir = Path(__file__).parent.absolute()
         self.images_dir = self.base_dir / "images"
         self.posters_dir = self.base_dir / "posters"
@@ -23,7 +22,6 @@ class PosterAnalysisTool:
         self.root.geometry(f"{width}x{height}")
         self.root.state('zoomed')
         
-        # Window icon
         icon_path = self.images_dir / "sovietunion.PNG"
         try:
             icon_image = Image.open(icon_path)
@@ -33,7 +31,6 @@ class PosterAnalysisTool:
         except Exception as e:
             print(f"Error loading window icon: {e}")
         
-        # Load decorative images for welcome screen
         self.left_decoration_image = None
         self.right_decoration_image = None
         self.load_decoration_images()
@@ -42,51 +39,42 @@ class PosterAnalysisTool:
         self.create_welcome_screen()
         
         self.current_poster = None
-        # Dictionary to keep references to PhotoImage objects
         self.image_references = {}
     
     def bind_navigation_keys(self):
-        """Bind arrow keys for navigation"""
         self.root.bind('<Left>', lambda e: self.show_previous_poster())
         self.root.bind('<Right>', lambda e: self.show_next_poster())
 
     def unbind_navigation_keys(self):
-        """Unbind arrow keys when leaving detail view"""
         self.root.unbind('<Left>')
         self.root.unbind('<Right>')
 
     def show_next_poster(self):
-        """Show the next poster in the list"""
         if self.current_poster:
             try:
                 current_index = next(i for i, p in enumerate(self.posters) if p['id'] == self.current_poster['id'])
                 if current_index < len(self.posters) - 1:
                     self.show_poster_detail(self.posters[current_index + 1])
             except StopIteration:
-                pass  # Current poster not found in list
+                pass 
 
     def show_previous_poster(self):
-        """Show the previous poster in the list"""
         if self.current_poster:
             try:
                 current_index = next(i for i, p in enumerate(self.posters) if p['id'] == self.current_poster['id'])
                 if current_index > 0:
                     self.show_poster_detail(self.posters[current_index - 1])
             except StopIteration:
-                pass  # Current poster not found in list
+                pass
 
     def load_decoration_images(self):
-        """Load decorative images for welcome screen"""
         try:
-            # Left decoration image
             left_img_path = self.images_dir / "sovietunion.PNG"
             left_img = Image.open(left_img_path) if left_img_path.exists() else None
             
-            # Right decoration image
             right_img_path = self.images_dir / "Flag_of_the_United_States.png"
             right_img = Image.open(right_img_path) if right_img_path.exists() else None
             
-            # If images don't exist, create placeholder images
             if left_img is None:
                 left_img = Image.new('RGB', (400, 400), color='#f0f0f0')
                 draw = Image.Draw(left_img)
@@ -97,7 +85,7 @@ class PosterAnalysisTool:
                 draw = Image.Draw(right_img)
                 draw.text((50, 300), "Right Decoration", fill="black")
             
-            # Resize images to fit screen
+            
             left_img = left_img.resize((400, 400), Image.LANCZOS)
             right_img = right_img.resize((400, 400), Image.LANCZOS)
             
@@ -106,14 +94,12 @@ class PosterAnalysisTool:
             
         except Exception as e:
             print(f"Error loading decoration images: {e}")
-            # Create simple placeholder images if there's an error
             left_img = Image.new('RGB', (200, 600), color='#f0f0f0')
             right_img = Image.new('RGB', (200, 600), color='#f0f0f0')
             self.left_decoration_image = ImageTk.PhotoImage(left_img)
             self.right_decoration_image = ImageTk.PhotoImage(right_img)
     
     def load_posters_from_json(self, json_file):
-        """Load posters data from a JSON file"""
         try:
             with open(json_file, 'r', encoding='utf-8') as file:
                 self.posters = json.load(file)
@@ -126,38 +112,30 @@ class PosterAnalysisTool:
             self.posters = []
     
     def load_and_resize_image(self, image_path, max_width, max_height):
-        """Load an image and resize it maintaining aspect ratio"""
         try:
-            # Open the image file
             original_image = Image.open(image_path)
             
-            # Calculate the new size while maintaining aspect ratio
             original_width, original_height = original_image.size
             ratio = min(max_width/original_width, max_height/original_height)
             new_width = int(original_width * ratio)
             new_height = int(original_height * ratio)
             
-            # Resize the image
             resized_image = original_image.resize((new_width, new_height), Image.LANCZOS)
             
-            # Convert to PhotoImage for Tkinter
             photo_image = ImageTk.PhotoImage(resized_image)
             
             return photo_image
         except Exception as e:
             print(f"Error loading image {image_path}: {e}")
-            # Return a placeholder if image can't be loaded
             placeholder = Image.new('RGB', (max_width, max_height), color='gray')
             return ImageTk.PhotoImage(placeholder)
     
     def create_welcome_screen(self):
-        """Create the initial welcome screen"""
         self.clear_screen()
         
         welcome_frame = tk.Frame(self.root, bg="#85321A")
         welcome_frame.pack(expand=True, fill="both")
         
-        # Add historical context button in top left corner
         context_button = tk.Button(
             welcome_frame,
             text="Historical Context",
@@ -171,7 +149,6 @@ class PosterAnalysisTool:
         )
         context_button.place(relx=0.02, rely=0.02, anchor="nw")
         
-        # Add decorative images on left and right
         if self.left_decoration_image:
             left_img_label = tk.Label(welcome_frame, image=self.left_decoration_image, bg="#85321A")
             left_img_label.pack(side="left", padx=20)
@@ -180,19 +157,15 @@ class PosterAnalysisTool:
             right_img_label = tk.Label(welcome_frame, image=self.right_decoration_image, bg="#85321A")
             right_img_label.pack(side="right", padx=20)
         
-        # Create a container frame for the main content
         main_content_frame = tk.Frame(welcome_frame, bg="#85321A")
         main_content_frame.pack(expand=True, fill="both")
         
-        # Center content (title, image, and instruction)
         center_frame = tk.Frame(main_content_frame, bg="#85321A")
         center_frame.pack(expand=True, fill="both")
         
-        # Create a frame specifically for the two-line title
         title_frame = tk.Frame(center_frame, bg="#85321A")
         title_frame.pack(pady=20)
         
-        # First line of title
         title_line1 = tk.Label(
             title_frame,
             text="Cold War Poster",
@@ -276,7 +249,6 @@ class PosterAnalysisTool:
         self.root.bind('<Return>', lambda e: self.show_poster_gallery())
     
     def show_written_response(self):
-        """Show the written response page with images"""
         self.clear_screen()
         
         # Main container
@@ -328,17 +300,17 @@ The posters reveal how each side wanted to define itself in opposition to the ot
 
     RESULTS OF PROPAGANDA:
 
-    1. Polarized Public Opinion: Propaganda deepened the divide between capitalist and communist ideologies, making compromise more difficult.
-
-    2. Increased Military Spending: Fear-mongering posters contributed to the arms race and increased defense budgets in both blocs.
-
-    3. Cultural Stereotypes: Propaganda created lasting stereotypes about both sides that persist even today.
-
-    4. Political Mobilization: Posters were effective at rallying citizens behind government policies and military actions.
-
-    5. Distrust in Media: The overt propaganda led many to become skeptical of all government messaging, a legacy that continues in modern politics.
-
-    6. Artistic Legacy: While serving political purposes, these posters also represent significant works of graphic design and political art."""
+    1. Changed Public Opinion: Propaganda deepened the divide between capitalist and communist ideologies, making compromise more difficult.
+    2. Increased Military Spending: posters contributed to the arms race and increased defense budgets in both side.
+    3. Cultural Stereotypes: Propaganda created lasting stereotypes about both sides that are still present even today.
+    4. Political Mobilization: Posters were effective at getting citizens to get behind government policies and military actions.
+    5. Distrust in Media: The extremist propaganda led many to become skeptical of all government messaging, a legacy that continues in modern politics.
+    6. Artistic Legacy: While serving political purposes, these posters also represent significant works of graphic design and political art.
+    
+    According to http://large.stanford.edu/courses/2017/ph241/le2/, Exploring the Impact of Propaganda during the Cold War by Professor Adrien Ivan,
+    sentiment towards the other side became much more prominent, as American were becoming increasingly radical towards soviet ideas, and vice versa.
+    Propaganda also puposely justified the arms race.
+    """
 
         text_content.insert("1.0", historical_text + results_text)
         
