@@ -8,7 +8,7 @@ import json
 class PosterAnalysisTool:
     def __init__(self, root):
         self.root = root
-        self.root.title("Poster Analysis Tool")
+        self.root.title("APUSH Karis Poster Analysis Tool")
         
         self.base_dir = Path(__file__).parent.absolute()
         self.images_dir = self.base_dir / "images"
