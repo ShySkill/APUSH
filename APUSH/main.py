@@ -175,7 +175,6 @@ class PosterAnalysisTool:
         )
         title_line1.pack()
         
-        # Second line of title
         title_line2 = tk.Label(
             title_frame,
             text="Analysis Tool",
@@ -185,31 +184,26 @@ class PosterAnalysisTool:
         )
         title_line2.pack()
         
-        # Add poster image in center
         try:
             poster_path = self.posters_dir / "poster.jpg"
             poster_img = Image.open(poster_path)
             
-            # Resize to appropriate dimensions (adjust as needed)
-            max_width = 600  # Maximum width for the image
-            max_height = 400  # Maximum height for the image
+            max_width = 600 
+            max_height = 400 
             poster_img.thumbnail((max_width, max_height), Image.LANCZOS)
             
             poster_photo = ImageTk.PhotoImage(poster_img)
             
-            # Store reference to prevent garbage collection
             self.image_references["welcome_poster"] = poster_photo
             
-            # Create image label
             poster_label = tk.Label(
                 center_frame,
                 image=poster_photo,
                 bg="#85321A"
             )
-            poster_label.pack(pady=20)  # Add padding above and below the image
+            poster_label.pack(pady=20) 
         except Exception as e:
             print(f"Error loading poster image: {e}")
-            # Placeholder if image fails to load
             poster_label = tk.Label(
                 center_frame,
                 text="[Featured Poster]",
@@ -219,7 +213,6 @@ class PosterAnalysisTool:
             )
             poster_label.pack(pady=20)
         
-        # Instruction label
         instruction_label = tk.Label(
             center_frame,
             text="Press Enter to view the poster gallery",
@@ -229,7 +222,6 @@ class PosterAnalysisTool:
         )
         instruction_label.pack(pady=20)
         
-        # Create a bottom frame for the extra details
         bottom_frame = tk.Frame(main_content_frame, bg="#85321A")
         bottom_frame.pack(side="bottom", fill="x", pady=40)
         
@@ -243,7 +235,6 @@ class PosterAnalysisTool:
         )
         extra_details.pack()
         
-        # Add a menu button that will be visible in all screens
         self.create_menu_button()
         
         self.root.bind('<Return>', lambda e: self.show_poster_gallery())
@@ -251,16 +242,13 @@ class PosterAnalysisTool:
     def show_written_response(self):
         self.clear_screen()
         
-        # Main container
         main_frame = tk.Frame(self.root)
         main_frame.pack(expand=True, fill="both", padx=10, pady=10)
         
-        # Left panel for text content
         text_frame = tk.Frame(main_frame, width=600, bd=2, relief="ridge")
         text_frame.pack(side="left", fill="both", expand=True)
         text_frame.pack_propagate(False)
         
-        # Title
         title_label = tk.Label(
             text_frame,
             text="Historical Context of Cold War Propaganda",
@@ -269,7 +257,6 @@ class PosterAnalysisTool:
         )
         title_label.pack()
         
-        # Text content with scrollbar
         text_content = tk.Text(
             text_frame,
             wrap="word",
@@ -278,7 +265,6 @@ class PosterAnalysisTool:
             pady=10
         )
         
-        # Historical context text
         historical_text = """The Cold War (1947-1991) was a period of great tension between the Soviet Union and the US and their respective allies. Propaganda posters played a crucial role in shaping public opinion on both sides.
 
 Key Themes in Cold War Propaganda:
@@ -295,7 +281,6 @@ Key Themes in Cold War Propaganda:
 
 The posters reveal how each side wanted to define itself in opposition to the other, using powerful imagery and easy to understand messages to appeal to emotions rather than rational argument."""
 
-        # Results of propaganda text
         results_text = """
 
     RESULTS OF PROPAGANDA:
@@ -314,11 +299,9 @@ The posters reveal how each side wanted to define itself in opposition to the ot
 
         text_content.insert("1.0", historical_text + results_text)
         
-        # Add bold formatting to the RESULTS section
         text_content.tag_add("bold", "1.0", "end")
         text_content.tag_config("bold", font=("Arial", 14))
         
-        # Find and bold the RESULTS title
         start_index = text_content.search("RESULTS OF PROPAGANDA:", "1.0", stopindex="end")
         if start_index:
             end_index = f"{start_index}+{len('RESULTS OF PROPAGANDA:')}c"
@@ -333,14 +316,11 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         scrollbar.pack(side="right", fill="y")
         text_content.pack(side="left", fill="both", expand=True)
         
-        # Right panel for images (rest of your existing code remains the same)
         image_frame = tk.Frame(main_frame, width=400, bd=2, relief="ridge", bg="white")
         image_frame.pack(side="right", fill="both", expand=False)   
         image_frame.pack_propagate(False)
         
-        # Load and display example images
         try:
-            # Image 1
             img1_path = self.posters_dir / "poster1.jpg"
             if img1_path.exists():
                 img1 = self.load_and_resize_image(img1_path, 350, 250)
@@ -356,7 +336,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
                 caption1.pack()
             
             
-            # Image 2
             img2_path = self.posters_dir / "poster3.jpg"
             if img2_path.exists():
                 img2 = self.load_and_resize_image(img2_path, 350, 250)
@@ -376,9 +355,8 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             caption2.pack()
             
         except Exception as e:
-            print(f"Error loading response images: {e}")
+            print(f"error loading response images: {e}")
         
-        # Back button
         back_button = tk.Button(
             image_frame,
             text="Back to Main Menu",
@@ -390,7 +368,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         back_button.pack(pady=20)
     
     def create_menu_button(self):
-        """Create a menu button that appears in all screens"""
         self.menu_button = tk.Button(
             self.root,
             text="Main Menu",
@@ -406,30 +383,26 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         for widget in self.root.winfo_children():
             if widget not in [self.menu_button]:
                 widget.destroy()
-        # Clear image references when changing screens
         self.image_references = {}
     
     def show_poster_gallery(self):
         self.clear_screen()
         self.root.unbind('<Return>')
-        self.unbind_navigation_keys()  # Unbind arrow keys when in gallery view
+        self.unbind_navigation_keys() 
         
-        # Main container
         main_frame = tk.Frame(self.root)
         main_frame.pack(expand=True, fill="both", padx=10, pady=10)
         
-        # Grid frame for posters
         grid_frame = tk.Frame(main_frame)
         grid_frame.pack(side="left", fill="both", expand=True)
         
-        # Create 4x6 grid of posters
         rows, cols = 4, 6
         for i in range(rows):
             grid_frame.rowconfigure(i, weight=1)
         for j in range(cols):
             grid_frame.columnconfigure(j, weight=1)
         
-        # Calculate which posters to show (in case we have less than 24)
+        #calculate which posters to show (in case we have less than 24)
         posters_to_show = min(24, len(self.posters))
         
         for idx in range(posters_to_show):
@@ -437,7 +410,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             row = idx // cols
             col = idx % cols
             
-            # Create a frame for each poster thumbnail
             poster_frame = tk.Frame(
                 grid_frame,
                 bd=2,
@@ -449,7 +421,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             poster_frame.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
             poster_frame.bind("<Button-1>", lambda e, p=poster: self.show_poster_detail(p))
             
-            # Poster title
             title_label = tk.Label(
                 poster_frame,
                 text=poster['title'],
@@ -458,7 +429,7 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             )
             title_label.pack(pady=5)
             
-            # Additional info (designer and year)
+            #aaaaaaaaaaa
             info_label = tk.Label(
                 poster_frame,
                 text=f"{poster.get('designer', 'Unknown')}, {poster.get('year', 'N/A')}",
@@ -467,17 +438,12 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             )
             info_label.pack()
             
-            # Load and display the thumbnail image
             if 'image_path' in poster and poster['image_path']:
-                # Convert to Path object if it isn't already
                 image_path = Path(poster['image_path']) if not isinstance(poster['image_path'], Path) else poster['image_path']
                 
-                # Load and resize the image (thumbnail size)
                 thumb_image = self.load_and_resize_image(image_path, 150, 100)
-                # Store reference to prevent garbage collection
                 self.image_references[f"thumb_{poster['id']}"] = thumb_image
                 
-                # Create image label
                 image_label = tk.Label(
                     poster_frame,
                     image=thumb_image,
@@ -485,7 +451,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
                 )
                 image_label.pack(pady=5)
             else:
-                # Placeholder if no image path
                 placeholder = tk.Label(
                     poster_frame,
                     text="No Image",
@@ -496,26 +461,21 @@ The posters reveal how each side wanted to define itself in opposition to the ot
                 )
                 placeholder.pack(pady=5)
             
-            # Bind click to the entire frame
             for child in poster_frame.winfo_children():
                 child.bind("<Button-1>", lambda e, p=poster: self.show_poster_detail(p))
     
     def show_poster_detail(self, poster):
-        """Show the detailed view of a selected poster"""
         self.clear_screen()
         self.current_poster = poster
-        self.bind_navigation_keys()  # Bind arrow keys for navigation
+        self.bind_navigation_keys() 
         
-        # Main container
         main_frame = tk.Frame(self.root)
         main_frame.pack(expand=True, fill="both", padx=10, pady=10)
         
-        # Left panel for explanation
         explanation_frame = tk.Frame(main_frame, width=400, bd=2, relief="ridge")
         explanation_frame.pack(side="left", fill="both", expand=False)
         explanation_frame.pack_propagate(False)
         
-        # Explanation title
         explanation_title = tk.Label(
             explanation_frame,
             text="Analysis",
@@ -524,7 +484,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         )
         explanation_title.pack()
         
-        # Add designer and year information
         meta_frame = tk.Frame(explanation_frame)
         meta_frame.pack(pady=5)
         
@@ -544,7 +503,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         )
         year_label.pack(fill="x")
         
-        # Explanation text with scrollbar
         explanation_text = tk.Text(
             explanation_frame,
             wrap="word",
@@ -561,11 +519,9 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         scrollbar.pack(side="right", fill="y")
         explanation_text.pack(side="left", fill="both", expand=True)
         
-        # Right panel for poster
         poster_frame = tk.Frame(main_frame, bd=2, relief="ridge", bg="white")
         poster_frame.pack(side="right", fill="both", expand=True)
         
-        # Poster title
         poster_title = tk.Label(
             poster_frame,
             text=poster['title'],
@@ -575,25 +531,19 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         )
         poster_title.pack()
         
-        # Load and display the full-size image
         if 'image_path' in poster and poster['image_path']:
-            # Convert to Path object if it isn't already
             image_path = Path(poster['image_path']) if not isinstance(poster['image_path'], Path) else poster['image_path']
             
-            # Get screen dimensions for sizing
             screen_width = self.root.winfo_screenwidth()
             screen_height = self.root.winfo_screenheight()
             
-            # Load and resize the image (using about 60% of screen height)
             full_image = self.load_and_resize_image(
                 image_path,
                 int(screen_width * 0.6),
                 int(screen_height * 0.6)
             )
-            # Store reference to prevent garbage collection
             self.image_references[f"full_{poster['id']}"] = full_image
             
-            # Create image label
             image_label = tk.Label(
                 poster_frame,
                 image=full_image,
@@ -601,7 +551,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             )
             image_label.pack(pady=20)
         else:
-            # Placeholder if no image path
             placeholder = tk.Label(
                 poster_frame,
                 text="No Image Available",
@@ -613,7 +562,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
             )
             placeholder.pack(pady=20)
         
-        # Navigation buttons
         nav_frame = tk.Frame(poster_frame, bg="white")
         nav_frame.pack(pady=10)
         
