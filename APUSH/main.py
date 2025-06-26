@@ -379,7 +379,6 @@ The posters reveal how each side wanted to define itself in opposition to the ot
         self.menu_button.place(relx=0.95, rely=0.02, anchor="ne")
     
     def clear_screen(self):
-        """Clear all widgets from the screen"""
         for widget in self.root.winfo_children():
             if widget not in [self.menu_button]:
                 widget.destroy()
