@@ -1,7 +1,3 @@
-Fix the aspect ratio not working
+APUSH Poster Analysis Tool 
 
-
-Search/Filter Functionality: Add the ability to search or filter posters by designer, year, etc.
-
-Zoom Feature: Allow users to zoom in on poster details
-
+Note: This tool is not yet optimized for public use; If you'd like to run it yourself, please update the image paths in posters.json to match your local setup.
